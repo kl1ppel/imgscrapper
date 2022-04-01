@@ -20,8 +20,8 @@ def gtimg(x,tags):#x = page number // tags == specific tag.
     return
                     ## SESSION ##
 
-def gtimg_session(x,tags):#Makes it work faster by using the same request for page you are in,
-                                #instead of sending a new request for every image downloaded
+def gtimg_session(x,tags):#Makes it work faster by using the same request for the page you are in,
+                                #instead of sending a new request for every new image downloaded
 
     url = f'yoururlhere?page={x}&tags={tags}' 
     r = s.get(url)#STARTS THE SESSION
