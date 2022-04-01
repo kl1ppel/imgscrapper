@@ -10,8 +10,8 @@ import datetime
 
 def gtimg(x,tags):#x = page number // tags == specific tag.
     
-    url = f'yoururlhere?page={x}&tags={tags}' # adjust page and tags(if any) for your needs.
-    r = requests.get(url) # sends a GET request to your url. 
+    url = f'yoururlhere?page={x}&tags={tags}' # adjust page and tags(if any) for your needs
+    r = requests.get(url) # sends a GET request to your url 
     sp = BeautifulSoup(r.content, 'html.parser')  
     images = sp.find_all('a',class_='directlink largeimg') #Select div/class
     for image in images:
@@ -20,7 +20,8 @@ def gtimg(x,tags):#x = page number // tags == specific tag.
     return
                     ## SESSION ##
 
-def gtimg_session(x,tags):#Makes it work faster by using the same request for page you are in, instead of sending a new request for every image downloaded
+def gtimg_session(x,tags):#Makes it work faster by using the same request for page you are in,
+                                #instead of sending a new request for every image downloaded
 
     url = f'yoururlhere?page={x}&tags={tags}' 
     r = s.get(url)#STARTS THE SESSION
@@ -34,7 +35,9 @@ def gtimg_session(x,tags):#Makes it work faster by using the same request for pa
             with open(filename, 'wb') as f: 
                 for chunk in response.iter_content(chunk_size=128): #builds the img
                     f.write(chunk) 
-                    
+                                                  
+                  ## CONFIG ##
+                  
 if __name__ == '__main__': # execute the first function
     s = requests.session()
     start = datetime.datetime.now()
@@ -50,4 +53,4 @@ if __name__ == '__main__': # execute the first function
 
 
 
-#### ADJUST THE CODE ACCORDING TO THE WEBSITE YOU WANT TO SCRAPE IMAGES FROM ####
+                                #### ADJUST THE CODE ACCORDING TO THE WEBSITE YOU WANT TO SCRAPE IMAGES FROM ####
