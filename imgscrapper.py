@@ -34,6 +34,7 @@ def gtimg_session(x,tags):#Makes it work faster by using the same request for pa
             with open(filename, 'wb') as f: 
                 for chunk in response.iter_content(chunk_size=128): #builds the img
                     f.write(chunk) 
+                    
 if __name__ == '__main__': # execute the first function
     s = requests.session()
     start = datetime.datetime.now()
