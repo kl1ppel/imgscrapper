@@ -1,15 +1,13 @@
-                                        ################## LIBRARIES ###############
+            ################## LIBRARIES ###############
 import requests
 from bs4 import BeautifulSoup
 import time
 import datetime
                                         
+                      ## PRIMARY FUNCTION ##
 
-
-                     ## PRIMARY FUNCTION ##
-
-def gtimg(x,tags):#x = page number // tags == specific tag.
-    
+def gtimg(x,tags):
+  '''x = page number // tags == specific tag.'''
     url = f'yoururlhere?page={x}&tags={tags}' # adjust page and tags(if any) for your needs
     
     r = requests.get(url) # sends a GET request to your url 
@@ -21,13 +19,15 @@ def gtimg(x,tags):#x = page number // tags == specific tag.
         print(image['href']) #ITINERATE INSIDE THE CLASS SEARCHING FOR THE LINK.
     return
                     ## SESSION ##
-
-def gtimg_session(x,tags): #Makes it work faster by using the same request for the page you are in,
-                                 #instead of sending a new request for every new image downloaded
+  
+  
+def gtimg_session(x,tags): 
+'''Makes it work faster by using the same request for the page you are in,
+   instead of sending a new request for every new image downloaded. It establish a session.'''
 
     url = f'yoururlhere?page={x}&tags={tags}' 
     
-    r = s.get(url)#STARTS THE SESSION
+    r = s.get(url) #STARTS THE SESSION
     
     sp = BeautifulSoup(r.content, 'html.parser')
     images = sp.find_all('a',class_='directlink largeimg')
@@ -45,7 +45,7 @@ def gtimg_session(x,tags): #Makes it work faster by using the same request for t
                                                   
                   ## CONFIG ##
                   
-if __name__ == '__main__': # execute the first function
+if __name__ == '__main__': # executes the first function
     s = requests.session()
     start = datetime.datetime.now()
     tags = input('Tag: ') # LEAVE BLANK IF NONE
