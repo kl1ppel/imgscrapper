@@ -1,66 +1,47 @@
-            ################## LIBRARIES ###############
+import os
+import datetime
 import requests
 from bs4 import BeautifulSoup
-import time
-import datetime
-                                        
-                      ## PRIMARY FUNCTION ##
 
-def gtimg(x,tags):
-  '''x = page number // tags == specific tag.'''
-    url = f'yoururlhere?page={x}&tags={tags}' # adjust page and tags(if any) for your needs
-    
-    r = requests.get(url) # sends a GET request to your url 
-    
-    sp = BeautifulSoup(r.content, 'html.parser')  
-    
-    images = sp.find_all('a',class_='directlink largeimg') #Select div/class
-    for image in images:
-        print(image['href']) #ITINERATE INSIDE THE CLASS SEARCHING FOR THE LINK.
+def get_images(page: int, tags: str = None) -> None:
+"""Faz o download de imagens de uma URL e as salva localmente."""
+url = f'suaurlaqui?page={page}&tags={tags}'
+response = requests.get(url)
+
+if response.status_code != 200:
+    print(f"Falha ao obter a página {page}: {response.status_code}")
     return
-                    ## SESSION ##
-  
-  
-def gtimg_session(x,tags): 
-'''Makes it work faster by using the same request for the page you are in,
-   instead of sending a new request for every new image downloaded. It establish a session.'''
 
-    url = f'yoururlhere?page={x}&tags={tags}' 
-    
-    r = s.get(url) #STARTS THE SESSION
-    
-    sp = BeautifulSoup(r.content, 'html.parser')
-    images = sp.find_all('a',class_='directlink largeimg')
-    
-    for image in images:
-            zx = image['href'] 
-            response = requests.get(zx) 
-            
-            print(f'Still Downloading... Page:',x,'Statuscode:',response.status_code) 
-            
-            filename = r'urfolderhere' + zx[zx.rfind('/'):]  #create the folder//name it
-            with open(filename, 'wb') as f: 
-                for chunk in response.iter_content(chunk_size=128): #builds the img
-                    f.write(chunk) 
-                                                  
-                  ## CONFIG ##
-                  
-if __name__ == '__main__': # executes the first function
-    s = requests.session()
-    start = datetime.datetime.now()
-    tags = input('Tag: ') # LEAVE BLANK IF NONE
-    
-    page1 = int(input('First page: '))
-    page2 = int(input('Second page: '))
-    
-    for x in range(page1,page2):
-        gtimg_session(x,tags)
-    
-    finish = datetime.datetime.now() - start
-    print(finish)
-    total =(page2-page1)
+soup = BeautifulSoup(response.content, 'html.parser')
+images = soup.find_all('a', class_='directlink largeimg')
+session = requests.Session()
 
+for image in images:
+    image_url = image['href']
+    image_response = session.get(image_url)
 
+    if image_response.status_code != 200:
+        print(f"Falha ao baixar a imagem {image_url}: {image_response.status_code}")
+        continue
 
+    filename = os.path.basename(image_url)
+    file_path = os.path.join('imagens', filename)
 
-                                #### ADJUST THE CODE ACCORDING TO THE WEBSITE YOU WANT TO SCRAPE IMAGES FROM ####
+    with open(file_path, 'wb') as f:
+        f.write(image_response.content)
+    print(f"Imagem baixada: {file_path}")
+def main():
+start = datetime.datetime.now()
+tags = input('Tag: ')
+first_page = int(input('Primeira página: '))
+last_page = int(input('Última página: '))
+
+os.makedirs('imagens', exist_ok=True)
+
+for page in range(first_page, last_page + 1):
+    get_images(page, tags)
+
+duration = datetime.datetime.now() - start
+print(f'{last_page - first_page + 1} páginas baixadas em {duration}')
+if name == 'main':
+main()
