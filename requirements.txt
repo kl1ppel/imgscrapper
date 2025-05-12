@@ -1,4 +1,12 @@
-requests
-BeautifulSoup4
-datetime
-OS
+# HTTP + retry
+requests>=2.26.0
+urllib3>=1.26.0
+
+# HTML parsing
+beautifulsoup4>=4.9.3
+
+# Barra de progresso
+tqdm>=4.60.0
+
+# (Opcional) carregar .env
+python-dotenv>=0.19.0
